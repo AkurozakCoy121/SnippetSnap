@@ -3,65 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- GOOGLE VERIFICATION CODE -->
-    <meta name="google-site-verification" content="MXsKXFsFRKdZ3NXGobMrVh8-otQPug7bhslAKQMqECc" />
-
-    <meta name="msvalidate.01" content="31C119F03589F1446B5B9E25F6D5C96B" />
-    
-    <!-- SEO CRITICAL TAGS -->
-    <title>SnippetSnap — Create Beautiful Code & UI Mockups Online</title>
-    <meta name="description" content="The best free tool to turn your screenshots and code into professional mockups. Engineered by XApp. No credit card required.">
-    <meta name="keywords" content="mockup generator, code snippet to image, free screenshot editor, XApp, developer tools, trakteer">
-    <meta name="author" content="XApp">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "SnippetSnap",
-      "operatingSystem": "Windows, MacOS, Linux, Android, iOS",
-      "applicationCategory": "DesignApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-    </script>
+    <title>SnippetSnap Pro — Professional UI & Code Mockups</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: #09090b;
             color: #fafafa;
-            overflow-x: hidden;
         }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #db2777 100%);
-            transition: background 0.4s ease;
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(16px);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .browser-frame {
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .preview-stage {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 24px 24px;
         }
 
-        .dot { height: 10px; width: 10px; border-radius: 50%; }
-        
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .config-sidebar { width: 100%; height: auto; order: 2; }
+            .main-content { order: 1; min-height: 400px; }
+            .desktop-nav { display: none; }
+        }
+
         input[type="range"] {
             -webkit-appearance: none;
             background: rgba(255,255,255,0.1);
@@ -70,243 +42,252 @@
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             background: #6366f1;
             border-radius: 50%;
             cursor: pointer;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
         }
 
-        .custom-file-upload {
-            border: 2px dashed rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-        }
-        .custom-file-upload:hover {
-            border-color: #6366f1;
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        #main-preview {
-            cursor: move;
-            user-select: none;
-            touch-action: none;
-        }
-
-        .config-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .config-sidebar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .config-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
+        #main-preview { cursor: move; transition: filter 0.2s ease; }
+        
+        /* Frame Styles */
+        .frame-mac { border-radius: 12px; }
+        .frame-win { border-radius: 4px; }
+        .frame-phone { border-radius: 40px; border: 8px solid #1a1a1a; max-width: 320px !important; margin: 0 auto; }
+        .frame-none { border-radius: 0; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <h2 class="sr-only">Free Online Code and UI Mockup Generator for Developers</h2>
-
-    <nav class="border-b border-white/5 py-4 px-8 flex justify-between items-center glass-panel sticky top-0 z-50">
-        <div class="flex items-center gap-6">
-            <div>
-                <h1 class="text-2xl font-extrabold tracking-tighter">
-                    SnippetSnap<span class="text-indigo-500">.</span>
-                </h1>
-                <p class="text-[9px] font-bold text-slate-500 tracking-[0.3em] uppercase">By XApp Studio</p>
-            </div>
+    <nav class="border-b border-white/5 py-4 px-6 flex justify-between items-center glass-card sticky top-0 z-[100]">
+        <div class="flex flex-col">
+            <h1 class="text-xl font-extrabold tracking-tighter">SnippetSnap<span class="text-indigo-500">PRO</span></h1>
+            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">XApp Studio</span>
         </div>
-        <div class="flex items-center gap-4">
-            <a href="https://saweria.co/omedonation" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[10px] font-bold tracking-widest hover:bg-orange-500/20 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+        
+        <div class="flex items-center gap-3">
+            <a href="https://saweria.co/omedonation" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[10px] font-black hover:bg-orange-500/20 transition-all">
                 DONATE
             </a>
-            <button onclick="downloadImage()" class="bg-indigo-600 text-white hover:bg-indigo-500 font-bold px-6 py-2 rounded-xl transition-all flex items-center gap-2 text-sm shadow-lg shadow-indigo-500/20">
+            <button onclick="downloadImage(this)" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-xl text-sm transition-all shadow-lg shadow-indigo-500/20">
                 EXPORT
             </button>
         </div>
     </nav>
 
-    <main class="flex-grow flex overflow-hidden">
-        <aside class="w-80 border-r border-white/5 p-6 flex flex-col gap-6 overflow-y-auto config-sidebar bg-[#09090b]">
-            <section class="p-4 rounded-2xl bg-white/5 border border-white/10 relative overflow-hidden">
-                <div class="shimmer absolute inset-0 opacity-20"></div>
-                <div class="relative z-10">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-[8px] font-black text-indigo-400 tracking-widest uppercase">Community Ads</span>
-                    </div>
-                    <div class="h-16 w-full rounded-xl bg-black/40 border border-white/5 flex items-center justify-center">
-                        <p class="text-[9px] text-slate-500 font-bold text-center">Place your ad here<br>to support this project.</p>
-                    </div>
-                </div>
-            </section>
-
+    <div class="flex flex-col md:flex-row flex-grow overflow-hidden">
+        <aside class="config-sidebar w-full md:w-80 border-r border-white/5 p-5 space-y-8 overflow-y-auto bg-[#0c0c0e]">
+            
             <section class="space-y-4">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">1. Content</label>
-                <label class="custom-file-upload w-full py-6 rounded-2xl flex flex-col items-center justify-center cursor-pointer">
+                <header class="flex items-center justify-between">
+                    <h3 class="text-[11px] font-black text-slate-500 uppercase tracking-widest">1. Frame & Content</h3>
+                </header>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setFrame('frame-mac')" class="py-2 text-[10px] font-bold rounded-lg border border-white/10 bg-white/5 hover:bg-white/10">macOS</button>
+                    <button onclick="setFrame('frame-win')" class="py-2 text-[10px] font-bold rounded-lg border border-white/10 bg-white/5 hover:bg-white/10">Windows</button>
+                    <button onclick="setFrame('frame-phone')" class="py-2 text-[10px] font-bold rounded-lg border border-white/10 bg-white/5 hover:bg-white/10">Mobile</button>
+                    <button onclick="setFrame('frame-none')" class="py-2 text-[10px] font-bold rounded-lg border border-white/10 bg-white/5 hover:bg-white/10">None</button>
+                </div>
+
+                <label class="block w-full py-4 rounded-xl border-2 border-dashed border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all text-center cursor-pointer">
                     <input type="file" id="imageUpload" accept="image/*" class="hidden">
-                    <span class="text-[10px] font-semibold text-slate-400">UPLOAD IMAGE</span>
+                    <span class="text-[10px] font-bold text-slate-400">REPLACE IMAGE</span>
                 </label>
-                <div class="space-y-4 pt-2">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-between text-[10px] font-bold text-indigo-400"><span>SCALE</span><span id="scaleVal">100%</span></div>
-                        <input type="range" id="scaleInput" min="20" max="250" value="100">
-                    </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between text-[10px] font-bold text-indigo-400 uppercase"><span>Zoom</span><span id="scaleVal">100%</span></div>
+                    <input type="range" id="scaleInput" class="w-full" min="10" max="200" value="100">
                 </div>
             </section>
 
             <section class="space-y-4">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">2. Canvas Styles</label>
-                <div class="grid grid-cols-4 gap-2">
-                    <button onclick="changeBg('linear-gradient(135deg, #4f46e5 0%, #db2777 100%)')" class="h-8 rounded-lg bg-indigo-500 border border-white/10"></button>
-                    <button onclick="changeBg('linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%)')" class="h-8 rounded-lg bg-sky-500 border border-white/10"></button>
-                    <button onclick="changeBg('#121212')" class="h-8 rounded-lg bg-zinc-900 border border-white/10"></button>
-                    <label class="h-8 rounded-lg bg-white/5 border border-white/10 cursor-pointer flex items-center justify-center text-[8px] font-bold">
-                        <input type="file" id="bgUpload" accept="image/*" class="hidden">
-                        KUSTOM
+                <h3 class="text-[11px] font-black text-slate-500 uppercase tracking-widest">2. Canvas Styles</h3>
+                <div class="grid grid-cols-5 gap-2">
+                    <button onclick="changeBg('linear-gradient(135deg, #4f46e5 0%, #9333ea 100%)')" class="h-6 rounded-md bg-indigo-500"></button>
+                    <button onclick="changeBg('linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)')" class="h-6 rounded-md bg-orange-500"></button>
+                    <button onclick="changeBg('linear-gradient(135deg, #10b981 0%, #3b82f6 100%)')" class="h-6 rounded-md bg-emerald-500"></button>
+                    <button onclick="changeBg('#000000')" class="h-6 rounded-md bg-black border border-white/10"></button>
+                    <label class="h-6 rounded-md bg-white/10 border border-white/20 flex items-center justify-center text-[7px] cursor-pointer font-bold">
+                        <input type="file" id="bgUpload" class="hidden" accept="image/*">IMG
                     </label>
                 </div>
-                <div class="flex flex-col gap-2">
-                    <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>PADDING</span><span id="padVal">60px</span></div>
-                    <input type="range" id="padInput" min="0" max="200" value="60">
+                <div class="space-y-3">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase"><span>Padding</span><span id="padVal">60px</span></div>
+                    <input type="range" id="padInput" class="w-full" min="0" max="150" value="60">
                 </div>
             </section>
 
-            <section class="space-y-4">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">3. Appearance</label>
-                <div class="space-y-4">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>BRIGHTNESS</span><span id="brightnessVal">100%</span></div>
-                        <input type="range" class="filter-ctrl" data-filter="brightness" min="0" max="200" value="100">
+            <section class="space-y-4 pb-10">
+                <h3 class="text-[11px] font-black text-slate-500 uppercase tracking-widest">3. Effects & Filters</h3>
+                <div class="grid gap-4">
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>BRIGHTNESS</span><span id="brightV">100%</span></div>
+                        <input type="range" class="filter-in w-full" data-f="brightness" min="0" max="200" value="100">
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>CONTRAST</span><span id="contrastVal">100%</span></div>
-                        <input type="range" class="filter-ctrl" data-filter="contrast" min="0" max="200" value="100">
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>CONTRAST</span><span id="contraV">100%</span></div>
+                        <input type="range" class="filter-in w-full" data-f="contrast" min="0" max="200" value="100">
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>BLUR</span><span id="blurV">0px</span></div>
+                        <input type="range" class="filter-in w-full" data-f="blur" min="0" max="20" value="0">
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>GRAYSCALE</span><span id="grayV">0%</span></div>
+                        <input type="range" class="filter-in w-full" data-f="grayscale" min="0" max="100" value="0">
                     </div>
                 </div>
             </section>
         </aside>
 
-        <section class="flex-grow bg-[#121214] flex items-center justify-center p-8 overflow-auto">
-            <div id="capture-container">
-                <div id="export-area" class="gradient-bg rounded-[48px] p-[60px] flex items-center justify-center shadow-2xl relative overflow-hidden min-w-[500px] min-h-[400px]">
-                    <div id="browser-window" class="relative z-10 browser-frame bg-[#0d0d0d] w-full max-w-4xl rounded-2xl overflow-hidden flex flex-col">
-                        <div class="h-10 bg-[#1a1a1a] flex items-center px-4 gap-2 border-b border-white/5">
-                            <div class="dot bg-[#ff5f57]"></div>
-                            <div class="dot bg-[#febc2e]"></div>
-                            <div class="dot bg-[#28c840]"></div>
-                            <div class="ml-4 flex-1 h-4 bg-black/40 rounded-full border border-white/5"></div>
+        <main class="main-content flex-grow preview-stage p-4 md:p-12 flex items-center justify-center overflow-auto">
+            <div id="export-area" class="relative transition-all duration-300 shadow-2xl overflow-hidden flex items-center justify-center" 
+                 style="background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%); padding: 60px; border-radius: 24px;">
+                
+                <div id="browser-window" class="frame-mac relative bg-[#0d0d0d] shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col border border-white/10">
+                    <div id="title-bar" class="h-10 bg-white/5 flex items-center px-4 gap-2 border-b border-white/5">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+                            <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+                            <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
                         </div>
-                        <div id="image-container" class="relative overflow-hidden bg-zinc-900 min-h-[300px]">
-                            <img id="main-preview" 
-                                 src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop" 
-                                 class="w-full h-auto block relative" 
-                                 crossorigin="anonymous">
-                        </div>
+                        <div class="mx-auto w-1/2 h-5 bg-black/20 rounded-md border border-white/5"></div>
+                    </div>
+                    
+                    <div class="relative overflow-hidden bg-zinc-900 flex items-center justify-center min-h-[200px]">
+                        <img id="main-preview" 
+                             src="https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format" 
+                             class="w-full h-auto block" crossorigin="anonymous">
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <footer class="bg-[#09090b] border-t border-white/5 py-6 px-12 flex justify-between items-center">
-        <div class="text-slate-500 text-[10px]">
-            © 2025 <span class="text-white font-bold">XApp Studio</span>. Free for everyone.
-        </div>
-        <div class="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-            <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider">Public Engine Active</span>
-        </div>
-    </footer>
+        </main>
+    </div>
 
     <script>
-        const state = { scale: 1, posX: 0, posY: 0, filters: { brightness: 100, contrast: 100 } };
-        const mainPreview = document.getElementById('main-preview');
-        const exportArea = document.getElementById('export-area');
+        const state = {
+            scale: 1, x: 0, y: 0,
+            filters: { brightness: 100, contrast: 100, blur: 0, grayscale: 0 }
+        };
 
-        function updateTransform() {
-            mainPreview.style.transform = `scale(${state.scale}) translate(${state.posX / state.scale}px, ${state.posY / state.scale}px)`;
+        const preview = document.getElementById('main-preview');
+        const exportArea = document.getElementById('export-area');
+        const browserWin = document.getElementById('browser-window');
+
+        // Frame Switcher
+        function setFrame(frameClass) {
+            browserWin.className = `relative bg-[#0d0d0d] shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col border border-white/10 ${frameClass}`;
+            document.getElementById('title-bar').style.display = frameClass === 'frame-none' ? 'none' : 'flex';
         }
 
-        document.getElementById('scaleInput').addEventListener('input', (e) => {
-            state.scale = e.target.value / 100;
-            document.getElementById('scaleVal').innerText = e.target.value + '%';
-            updateTransform();
-        });
-
-        let isDragging = false;
-        let startX, startY;
-
-        mainPreview.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX - state.posX;
-            startY = e.clientY - state.posY;
-            mainPreview.style.cursor = 'grabbing';
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            state.posX = e.clientX - startX;
-            state.posY = e.clientY - startY;
-            updateTransform();
-        });
-
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-            mainPreview.style.cursor = 'move';
-        });
-
-        document.getElementById('imageUpload').addEventListener('change', (e) => {
+        // Background Control
+        function changeBg(val) { exportArea.style.background = val; }
+        
+        document.getElementById('bgUpload').addEventListener('change', (e) => {
             const file = e.target.files[0];
-            if (file) {
+            if(file) {
                 const reader = new FileReader();
-                reader.onload = r => mainPreview.src = r.target.result;
+                reader.onload = r => exportArea.style.backgroundImage = `url(${r.target.result})`;
                 reader.readAsDataURL(file);
             }
         });
 
-        function changeBg(val) { exportArea.style.background = val; }
+        // Scale Control
+        document.getElementById('scaleInput').addEventListener('input', (e) => {
+            state.scale = e.target.value / 100;
+            document.getElementById('scaleVal').innerText = e.target.value + '%';
+            applyTransform();
+        });
 
+        // Padding Control
         document.getElementById('padInput').addEventListener('input', (e) => {
             exportArea.style.padding = e.target.value + 'px';
             document.getElementById('padVal').innerText = e.target.value + 'px';
         });
 
-        document.querySelectorAll('.filter-ctrl').forEach(ctrl => {
-            ctrl.addEventListener('input', (e) => {
-                const type = e.target.dataset.filter;
+        // Filter Controls
+        document.querySelectorAll('.filter-in').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const type = e.target.dataset.f;
                 state.filters[type] = e.target.value;
-                document.getElementById(type + 'Val').innerText = e.target.value + '%';
-                exportArea.style.filter = `brightness(${state.filters.brightness}%) contrast(${state.filters.contrast}%)`;
+                const unit = type === 'blur' ? 'px' : (type === 'hue-rotate' ? 'deg' : '%');
+                document.getElementById(type.substring(0,6) + 'V').innerText = e.target.value + unit;
+                
+                preview.style.filter = `
+                    brightness(${state.filters.brightness}%) 
+                    contrast(${state.filters.contrast}%) 
+                    blur(${state.filters.blur}px) 
+                    grayscale(${state.filters.grayscale}%)
+                `;
             });
         });
 
-        async function downloadImage() {
-            const btn = event.currentTarget;
-            btn.innerText = "CAPTURING...";
+        // Image Dragging logic
+        let dragging = false;
+        let startX, startY;
+
+        preview.addEventListener('mousedown', e => {
+            dragging = true;
+            startX = e.clientX - state.x;
+            startY = e.clientY - state.y;
+            preview.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            state.x = e.clientX - startX;
+            state.y = e.clientY - startY;
+            applyTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            dragging = false;
+            preview.style.cursor = 'move';
+        });
+
+        function applyTransform() {
+            preview.style.transform = `scale(${state.scale}) translate(${state.x/state.scale}px, ${state.y/state.scale}px)`;
+        }
+
+        // File Upload
+        document.getElementById('imageUpload').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = r => {
+                    preview.src = r.target.result;
+                    state.x = 0; state.y = 0; applyTransform();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Export Function
+        async function downloadImage(btn) {
+            const originalText = btn.innerText;
+            btn.innerText = "PROCESSING...";
+            btn.disabled = true;
+            
             try {
-                const canvas = await html2canvas(exportArea, { useCORS: true, scale: 2 });
+                const canvas = await html2canvas(exportArea, {
+                    useCORS: true,
+                    scale: 3, // High quality
+                    backgroundColor: null
+                });
                 const link = document.createElement('a');
-                link.download = `SnippetSnap_${Date.now()}.png`;
-                link.href = canvas.toDataURL();
+                link.download = `SnippetSnap_Export_${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
                 link.click();
+            } catch (err) {
+                alert("Export failed. Try a smaller image.");
             } finally {
-                btn.innerText = "EXPORT";
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
         }
     </script>
 </body>
 </html>
-
-
